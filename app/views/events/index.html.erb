@@ -1,0 +1,89 @@
+<div class='container'>
+    <div class='row'>
+        <div class='col-sm-3'>
+            <h5>Search by: </h5>
+            <div class='col-xs-12'>
+                <form method='post' action='/events/search'>
+                    <input type='hidden' name="form_value" value='event_title'>
+                    <input type='hidden' name="authenticity_token" value='<%= form_authenticity_token %>'>
+        
+                    <div class='col-xs-12 pa-5'>
+                        <label class="control-label" for='title'>Event Title:</label>
+                        <input class="form-control"  type='text' name='title' placeholder='event title'>
+                        <% if flash[:event_title] %>
+                        <% flash[:event_title].each do |field,value| %>
+                            <% if field=='title' %>
+                                <span class='small text-danger'><%= field.capitalize %> <%= value[0] %></span>
+                            <% end %>
+                        <% end %>
+                        <% end %>
+                    </div>
+                    <div class='col-xs-8 pa-5 text-right'>
+                        <input class="btn btn-primary" type='submit' value='Search'>
+                    </div>
+                </form>
+            </div>
+            <p>OR</p>
+            <div class='col-xs-12'>
+                <form method='post' action='/events/search'>
+                    <input type='hidden' name="form_value" value='event_date'>
+                    <input type='hidden' name="authenticity_token" value='<%= form_authenticity_token %>'>
+        
+                    <div class='col-xs-12 pa-5'>
+                        <label class="control-label" for='date'>Event Date:</label>
+                        <input class="form-control"  type='date' name='date'>
+                        <% if flash[:event_date] %>
+                        <% flash[:event_date].each do |field,value| %>
+                            <% if field=='date' %>
+                                <span class='small text-danger'><%= field.capitalize %> <%= value[0] %></span>
+                            <% end %>
+                        <% end %>
+                        <% end %>
+                    </div>
+                    <div class='col-xs-8 pa-5 text-right'>
+                        <input class="btn btn-primary" type='submit' value='Search'>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <h3 class='text-primary text-center'> Events </h3>
+        <% if @events.length <= 0 %>
+            <h4 class='text-success'> No events to display.</h4>
+        <% end %>   
+        <div class='col-sm-9 Overflow' style="padding: 0px 2px;">             
+                <% @events.each do |event| %>
+                <div class="card">
+                    <% if event.image != "" %>
+                        <div class="card-body" style='background: url(<%= event.image %>) no-repeat center center;'>
+                    <% else %>
+                        <div class="card-body noImage" style='background: image-url('no-img.png') no-repeat center center;'>
+                    <% end %>
+                        <div class="text-right bg-light ma-4">
+                        <% if event.user.id == @user.id %> 
+                            <a href='/events/<%= event.id %>'>View</a>
+                            <span> | </span>
+                            <a href='/events/<%= event.id %>/edit'>Edit</a>
+                            <span> | </span>
+                            <a href='/events/<%= event.id %>/destroy' data-method="delete">Delete</a>
+                        <% else  %>
+                            <a href='/events/<%= event.id %>'>View</a>
+                            <span> | </span>
+                                <% if (UserEvent.where(user: @user, event: event)).length > 0 %> 
+                            <span>Joined</span>
+                                <% else %>
+                            <a href='/events/<%= event.id %>/join'>Join</a>
+                            <% end %>
+                        <% end %>
+                        </div>
+                        <div style='color: #ff001f'>
+                            <h4 class="card-title text-center ma-4 pa-5"><%= event.title %></h4>
+                            <p class="card-text text-center ma-4 pa-5"><%= event.date.strftime("%d, %b %Y") %> @ <%= event.start_time.strftime("%H:%M %p") %></p>
+                        </div>
+                        <p class='ma-4 text-right' style='margin-top: 100px'><b>Organized By: </b><span class='text-capitalize' style='color: #ff001f'><%= event.user.name %> </span></p>
+                        </div>
+                </div>
+                <% end %>
+        </div>
+        <div class='col-sm-2'></div>
+    </div>
+</div>

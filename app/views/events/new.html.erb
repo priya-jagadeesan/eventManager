@@ -1,0 +1,112 @@
+<div class='container'>
+<div class='row'>
+    <div class='form-group form-center col-xs-6 pa-5'>
+        <h3> Create a new event</h3>
+        <form method='post' action='/events/create'>
+            <input type='hidden' name="form_value" value='event_register'>
+            <input type='hidden' name="authenticity_token" value='<%= form_authenticity_token %>'>
+
+            <div class='col-xs-12 pa-5'>
+                <label class="control-label" for='title'>Title:</label>
+                <input class="form-control"  type='text' name='event[title]' placeholder='specify a related title'>
+                <% if flash[:event_register] %>
+                <% flash[:event_register].each do |field,value| %>
+                    <% if field=='title' %>
+                        <span class='small text-danger'><%= field.capitalize %> <%= value[0] %></span>
+                    <% end %>
+                <% end %>
+                <% end %>
+            </div>
+            
+
+            <div class='col-xs-12 pa-5'>
+                <label class="control-label" for='descr'>Description:</label>
+                <textarea class="form-control rounded-0" name='event[description]' placeholder='describe the event, do not exceed 100chars'></textarea>
+                <% if flash[:event_register] %>
+                <% flash[:event_register].each do |field,value| %>
+                    <% if field=='description' %>
+                    <span class='small text-danger'><%= field.capitalize %> <%= value[0] %></span>
+                    <% end %>
+                <% end %>
+                <% end %>
+            </div>
+
+            <div class='col-xs-10 pa-5'>
+                <label class="control-label" for='date'>When: </label>
+                <input class="form-control"  type='date' name='event[date]' placeholder='<%= @current_date %>' min='<%= @current_date %>'>
+                <% if flash[:event_register] %>
+                <% flash[:event_register].each do |field,value| %>
+                    <% if field=='date' %>
+                    <span class='small text-danger'><%= field.capitalize %> <%= value[0] %></span>
+
+                    <% end %>
+                <% end %>
+                <% end %>
+            </div>
+
+            <div class='col-xs-4 pa-5'>
+                <label class="control-label" for='start_time'>Start time:</label>
+                <input class="form-control"  type='time' name='event[start_time]' placeholder='<%= @current_time %>'>
+            </div>
+            <div class='col-xs-4 pa-5'>
+                <label class="control-label" for='end_time'>End time:</label>
+                <input class="form-control col-xs-2"  type='time' name='event[end_time]' placeholder='hh:mm am'>
+            </div>
+            <div class='col-xs-12 pa-5'>
+            <% if flash[:event_register] %>
+                <% flash[:event_register].each do |field,value| %>
+                <% if field=='end_time' || field=='start_time' %>
+                    <span class='small text-danger'>Time invalid</span>
+                    <% break %>
+                <% end %>
+                <% end %>
+            <% end %>
+            </div>
+
+            <div class='col-xs-12 pa-5'>
+                <label class="control-label" for='location'>Venue:</label>
+                <input class="form-control" id='mapsearch' name='event[location]' placeholder='address' type='text' />
+                <% if flash[:event_register] %>
+                <% flash[:event_register].each do |field,value| %>
+                    <% if field=='location' %>
+                    <span class='small text-danger'><%= field.capitalize %> <%= value[0] %></span>
+
+                    <% end %>
+                <% end %>
+                <% end %>
+            </div>
+
+            <div class='col-xs-12 pa-5'>
+                <label class="control-label" for='image'>Image URL:</label>
+                <input class="form-control" name='event[image]' placeholder='sample image url (optional)' type='url' />
+                <% if flash[:event_register] %>
+                <% flash[:event_register].each do |field,value| %>
+                    <% if field=='image' %>
+                    <span class='small text-danger'><%= field.capitalize %> <%= value[0] %></span>
+                    <% end %>
+                <% end %>
+                <% end %>
+            </div>
+
+            <div class='col-xs-12 pa-5'>
+                <label class="control-label" for='info'>More Information:</label>
+                <textarea class="form-control rounded-0" name='event[information]' placeholder='more information (optional)'></textarea>
+                <% if flash[:event_register] %>
+                <% flash[:event_register].each do |field,value| %>
+                    <% if field=='information' %>
+                    <span class='small text-danger'><%= field.capitalize %> <%= value[0] %></span>
+                    <% end %>
+                <% end %>
+                <% end %>
+            </div>
+
+            <div class='col-xs-8 pa-5 text-center'>
+                <input class="btn btn-primary" type='submit' value='Add Event'>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<script type='text/javascript'>
+    var searchBox = new google.maps.places.SearchBox( document.getElementById('mapsearch') )
+</script>

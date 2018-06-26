@@ -1,0 +1,35 @@
+<div class='container'>
+    <div class='row'>
+        <div class='col-sm-3'>
+        </div>
+        <h3 class='text-primary text-center'> Events </h3>
+        <% if @events.length <= 0 %>
+            <h4 class='text-success'> No events to display.</h4>
+        <% end %>   
+        <div class='col-sm-9 Overflow' style="padding: 0px 2px;">             
+                <% @events.each do |event| %>
+            <div class="card">
+                <% if event.image != "" %>
+                <div class="card-body" style='background: url(<%= event.image %>) no-repeat center center;'>
+                <% else %>
+                    <div class="card-body noImage" style='background: image-url('no-img.png') no-repeat center center;'>
+                <% end %>                        
+                        <div class="text-right ma-4">
+                            <a href='/events/<%= event.id %>'>View</a>
+                            <span> | </span>
+                            <a href='/events/<%= event.id %>/edit'>Edit</a>
+                            <span> | </span>
+                            <a href='/events/<%= event.id %>/destroy' data-method="delete">Delete</a>
+                        </div>
+                        <div style='color: #ff001f'>
+                            <h4 class="card-title text-center ma-4 pa-5"><%= event.title %></h4>
+                            <p class="card-text text-center ma-4 pa-5"><%= event.date.strftime("%d, %b %Y") %> @ <%= event.start_time.strftime("%H:%M %p") %></p>
+                        </div>
+                            <p class='ma-4 text-right' style='margin-top: 100px'><b>Organized By: </b><span class='text-capitalize' style='color: #ff001f'><%= event.user.name %> </span></p>
+                    </div>
+                </div>
+                <% end %>
+            </div>
+        <div class='col-sm-2'></div>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+// Place all the styles related to the login controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.form-center{
+    margin: 0 0 0 300px;
+}
+
+@media(max-width: 500px){
+    .form-center{
+        margin: 0px;
+    }
+}
+
+.pa-2{
+    padding: 2px;
+}
+
+.dScroll{
+    max-height: 500px;
+    overflow: scroll;
+}
+
+.b-1{
+    border: 1px solid black;
+    margin: 2px;
+}
+
+.container1{
+    position: relative;
+    overflow: hidden;
+    height: 500px;
+ }
+ 
+ .row1 {
+   position: relative;
+   color: white;
+   z-index: 2; /* Show content above video */
+   height: 80%;
+ }
+ 
+ #video-background{ 
+   position: absolute;
+   height: auto;
+   width: auto;
+   min-height: 100%;
+   min-width: 100%;
+   left: 50%;
+   top: 50%;
+   -webkit-transform: translate3d(-50%, -50%, 0);
+   transform: translate3d(-50%, -50%, 0);
+   z-index: -1;
+ }

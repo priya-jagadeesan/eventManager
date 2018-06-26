@@ -1,0 +1,80 @@
+<div class='container'>
+    <div class='row'>
+        <div class='col-sm-8'>
+            <p class='ma-4 text-right'><b>Organized By: </b><span 'text-capitalize'><%= @event.user.name %> </span></p>
+            <div class='well well-lg text-center'>
+                <% if @user.id == @event.user.id %>
+                    <p class='text-right'><a href='/events/<%= @event.id %>/edit'>Edit</a><span> | </span><a href='/events/<%= @event.id %>/destroy'>Delete</a></p>
+                <% end %>
+                    <h3 class='text-primary text-capitalize text-center' > 
+                    <%= @event.title %> 
+                </h3>
+                <p><%= @event.description %></p>
+                <div class='bg-warning' style="display:inline-block">
+                    <div style="display:inline-block">
+                        <p style="display:inline-block;"><b>On: </b><%= @event.date.strftime("%d, %b %Y") %></p>
+                    </div>
+                    <div style="display:inline-block">
+                        <h4 class='text-right' style="display:inline-block;">@ </h4>
+                        <p style="display:inline-block;"><%= @event.start_time.strftime("%H:%M %p") %></p>
+                    </div>
+                </div>
+                <div class='text-center' >
+                    <h4>Venue: </h4>
+                    <p><%= @event.location %></p>
+                    <div class='text-center'  id="map" style='width: 700px; height: 400px;'></div>
+                </div>
+                <% if @event.information.length > 0 %>
+                    <h4>More: </h4>
+                        <p><%= @event.information %></p>
+                <% end %>
+            </div>
+        </div>
+        <div class='col-sm-4'>
+            <p class="ma-4 text-center"><b>Members: </b></p>
+            <div class='well well-lg text-center dScroll'>
+                <% if @user_event.length > 0 %>
+                    <% @user_event.each do |user_event| %>
+                    <div class="card text-white mb-3 pa-2"">
+                        <div class="card-body">
+                            <h5 class="card-title pa-2"><%= user_event.user.name %></h5>
+                        </div>
+                    </div>
+                    <% end %>
+                <% else %>
+                    <h5 class="card-title pa-2">No members enrolled.</h5>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+<script type='text/javascript'>
+    var markers = <%=raw @event_array%>
+    createMapMarkers(markers, 'map')
+
+    function createMapMarkers(markers, elementID){
+        console.log(markers)
+        console.log(elementID)
+        if(markers){
+            var latlng = new google.maps.LatLng(markers[1], markers[2]);
+            var myOptions = {
+                zoom: 12,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                mapTypeControl: false
+            };
+            var map = new google.maps.Map(document.getElementById(elementID), myOptions);
+            var infowindow = new google.maps.InfoWindow(), marker, i;
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(markers[1], markers[2]),
+                map: map
+            });
+            google.maps.event.addListener(marker, 'click', (function(marker) {
+                return function() {
+                    infowindow.setContent(markers[0]);
+                    infowindow.open(map, marker);
+                }
+            })(marker));
+        }
+    }
+</script>

@@ -1,0 +1,71 @@
+<div class='container'>
+<div class='row'>
+    <div class='col-sm-6 form-center'>
+        <h3> REGISTER </h3>
+        <form method='post' action='/create'>
+            <input type='hidden' name="form_value" value='register'>
+            <input type='hidden' name="authenticity_token" value='<%= form_authenticity_token %>'>
+
+            <div class="form-group <%= flash[:hasError] %>">
+            <label class="control-label" for='user[name]'>Name:</label>
+            <input class="form-control"  type='text' name='user[name]' placeholder='Name'>
+            <% if flash[:register] %>
+            <% flash[:register].each do |field,value| %>
+                <% if field == 'name' %>
+                    <span class='small text-danger'><%= field.capitalize %> <%= value[0] %></span>
+                    <% break %>
+                <% end %>
+            <% end %>
+            <% end %>
+            </div>
+
+            <div class="form-group <%= flash[:hasError] %>">
+            <label class="control-label" for='email'>Email:</label>
+            <input class="form-control"  type='text' name='user[email]' placeholder='abc@xyz.com'>
+            <% if flash[:register] %>
+            <% flash[:register].each do |field,value| %>
+                <% if field == 'email' %>
+                    <span class='small text-danger'><%= field.capitalize %> <%= value[0] %></span>
+                    <% break %>
+                <% end %>
+            <% end %>
+            <% end %>
+            </div>
+
+            <div class="form-group <%= flash[:hasError] %>">
+            <label class="control-label" for='password'>Password:</label>
+            <input class="form-control"  type='password' name='user[password]' placeholder=''>
+            <% if !flash[:register] %>
+            <span class='small text-info'> *Passwords must be 8chars long </span>
+            <% end %>
+            <% if flash[:register] %>
+            <% flash[:register].each do |field,value| %>
+                <% if field=='password' && field=='password_confirmation' %>
+                    <span class='small text-danger'> </span>
+                <% elsif field=='password' %>
+                    <span class='small text-danger'> Password Invalid </span>
+                <% end %>
+            <% end %>
+            <% end %>
+            </div>
+            <div class="form-group <%= flash[:hasError] %>">
+            <label class="control-label" for='password_confirmation'>Confirm Password:</label>
+            <input class="form-control"  type='password' name='user[password_confirmation]' placeholder=''>
+            <% if flash[:register] %>
+            <% flash[:register].each do |field,value| %>
+                <% if field == 'password_confirmation' %>
+                    <span class='small text-danger'><%= field.capitalize %> <%= value[0] %></span>
+                    <% break %>
+                <% end %>
+            <% end %>
+            <% end %>
+            </div>
+            <div class="form-group text-center">
+                <input class="btn btn-primary" type='submit' value='Register'>
+            </div>
+        </form>
+    </div>
+    <p><a href="/">Login</a></p>
+    <div class='col-sm-12'>
+</div>
+</div>
