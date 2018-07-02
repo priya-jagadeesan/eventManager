@@ -49,7 +49,7 @@ class LoginController < ApplicationController
 
     def update
         @user = User.find(params[:id])
-        @user.update(user_params)
+        @user.update(update_params)
         redirect_to :back
     end
 
@@ -61,5 +61,8 @@ class LoginController < ApplicationController
     private
     def user_params
         params.require(:user).permit(:name,:email,:password,:password_confirmation, :image)
+    end
+    def update_params
+        params.require(:user).permit(:image)
     end
 end
